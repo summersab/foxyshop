@@ -65,7 +65,7 @@ function foxyshop_create_post_type() {
 		'view_item' => __('View', 'foxyshop').' '.FOXYSHOP_PRODUCT_NAME_SINGULAR,
 		'all_items' => __('Manage', 'foxyshop').' '.FOXYSHOP_PRODUCT_NAME_PLURAL, //Since WP 3.2
 		'menu_name' => (version_compare($wp_version, '3.2', '>=') ? apply_filters('foxyshop_main_menu_name', "FoxyShop") : FOXYSHOP_PRODUCT_NAME_PLURAL),
-		'not_found' =>	__('No', 'foxyshop').' '.FOXYSHOP_PRODUCT_NAME_PLURAL.' '.__('Found'),
+		'not_found' =>  __('No', 'foxyshop').' '.FOXYSHOP_PRODUCT_NAME_PLURAL.' '.__('Found'),
 		'not_found_in_trash' => __('No', 'foxyshop').' '.FOXYSHOP_PRODUCT_NAME_PLURAL.' '.__('Found in Trash'),
 		'search_items' => __('Search', 'foxyshop').' '.FOXYSHOP_PRODUCT_NAME_PLURAL,
 		'parent_item_colon' => ''
@@ -204,30 +204,30 @@ function foxyshop_manage_custom_columns($column_name, $id) {
 add_action('restrict_manage_posts', 'foxyshop_restrict_manage_posts');
 function foxyshop_restrict_manage_posts() {
 
-	// only display these taxonomy filters on desired custom post_type listings
-	global $typenow;
-	if ($typenow == 'foxyshop_product') {
+    // only display these taxonomy filters on desired custom post_type listings
+    global $typenow;
+    if ($typenow == 'foxyshop_product') {
 
-		// create an array of taxonomy slugs you want to filter by - if you want to retrieve all taxonomies, could use get_taxonomies() to build the list
-		$filters = array('foxyshop_categories');
+        // create an array of taxonomy slugs you want to filter by - if you want to retrieve all taxonomies, could use get_taxonomies() to build the list
+        $filters = array('foxyshop_categories');
 
-		foreach ($filters as $tax_slug) {
-			// retrieve the taxonomy object
-			$tax_obj = get_taxonomy($tax_slug);
-			$tax_name = $tax_obj->labels->name;
-			// retrieve array of term objects per taxonomy
-			$terms = get_terms($tax_slug);
+        foreach ($filters as $tax_slug) {
+            // retrieve the taxonomy object
+            $tax_obj = get_taxonomy($tax_slug);
+            $tax_name = $tax_obj->labels->name;
+            // retrieve array of term objects per taxonomy
+            $terms = get_terms($tax_slug);
 
-			// output html for taxonomy dropdown filter
-			echo "<select name='$tax_slug' id='$tax_slug' class='postform'>";
-			echo '<option value="">' . __('Show All', 'foxyshop') . ' ' . $tax_name . '</option>'."\n";
-			foreach ($terms as $term) {
-				// output each select option line, check against the last $_GET to show the current option selected
-				echo '<option value='. $term->slug, $tax_slug == $term->slug ? ' selected="selected"' : '','>' . $term->name .' (' . $term->count .')</option>';
-			}
-			echo "</select>";
-		}
-	}
+            // output html for taxonomy dropdown filter
+            echo "<select name='$tax_slug' id='$tax_slug' class='postform'>";
+            echo '<option value="">' . __('Show All', 'foxyshop') . ' ' . $tax_name . '</option>'."\n";
+            foreach ($terms as $term) {
+                // output each select option line, check against the last $_GET to show the current option selected
+                echo '<option value='. $term->slug, $tax_slug == $term->slug ? ' selected="selected"' : '','>' . $term->name .' (' . $term->count .')</option>';
+            }
+            echo "</select>";
+        }
+    }
 }
 
 
@@ -781,34 +781,32 @@ function foxyshop_addon_products_setup() {
 
 
 //-------------------------------------------
-//Product Feed Data
+//Products Feed Data
 //-------------------------------------------
 function foxyshop_google_products_data() {
 	global $post, $product_feed_field_names;
 
 	echo '<p>The following data is used to generate the product feed for integrating with systems such as Google Merchant Services, Facebook Merchant Commerce, etc. Read the <a href="http://www.google.com/support/merchants/bin/answer.py?hl=en&answer=188494#US" target="_blank">feed specification</a> for specific fields.<br /><em>Google Product Category</em> is required.</p>';
 
-//Killroy
-    $product = foxyshop_setup_product($post);
-//  $gtin = $product['code'];
-//  $mpn = $product['code'];
+	$product = foxyshop_setup_product($post);
+//	$gtin = $product['code'];
+//	$mpn = $product['code'];
     $condition = "new";
-    $brand = get_bloginfo('name');
+	$brand = get_bloginfo('name');
 
 	foreach($product_feed_field_names as $field) {
 		$display_title = ucwords(str_replace("_", " ", $field));
 		if (strlen($display_title) <= 4 && $display_title != "Size") $display_title = strtoupper($display_title);
 		echo '<div class="foxyshop_field_control">'."\n";
 		echo '<label for="_' . $field . '">' . $display_title . '</label>'."\n";
-        $val = esc_attr(get_post_meta($post->ID, "_" . $field, 1));
+		$val = esc_attr(get_post_meta($post->ID, "_" . $field, 1));
 
-        if ($field == 'condition' && !$val) $val = $condition;
-//      if ($field == 'gtin' && !$val) $val = $gtin;
-//      if ($field == 'mpn' && !$val) $val = $mpn;
+		if ($field == 'condition' && !$val) $val = $condition;
+//		if ($field == 'gtin' && !$val) $val = $gtin;
+//		if ($field == 'mpn' && !$val) $val = $mpn;
         if ($field == 'brand' && !$val) $val = $brand;
 
 		echo '<input type="text" id="_' . $field . '" name="_' . $field . '" value="' . $val . '" />'."\n";
-//		echo '<input type="text" id="_' . $field . '" name="_' . $field . '" value="' . esc_attr(get_post_meta($post->ID, "_" . $field, 1)) . '" />'."\n";
 		switch ($field) {
 			case "google_product_category": echo '<span>(<a href="http://www.google.com/basepages/producttype/taxonomy.en-US.txt" target="_blank">options</a>)</span>'; break;
 		}
@@ -1043,7 +1041,7 @@ var variation_key = '<?php echo $variation_key; ?>';
 var variation_select_options = "";
 <?php
 foreach ($var_type_array as $var_name => $var_val) {
-	echo "variation_select_options += '<option value=\"" . $var_name . '">' . $var_val . "	</option>';\n";
+	echo "variation_select_options += '<option value=\"" . $var_name . '">' . $var_val . "  </option>';\n";
 }
 if (is_array($saved_variations)) {
 	echo "\t\tvariation_select_options += '<optgroup label=\"" . __('Saved Variations', 'foxyshop') . "\">';\n";
@@ -1264,7 +1262,6 @@ function foxyshop_product_meta_save($post_id) {
 	if (count($variations) == 0) $variations = "";
 	foxyshop_save_meta_data('_variations', $variations);
 
-
 	//Product Feed Fields
 	if ($foxyshop_settings['generate_product_sitemap']) {
 		foreach($product_feed_field_names as $field) {
@@ -1272,10 +1269,10 @@ function foxyshop_product_meta_save($post_id) {
 		}
 	}
 
-	//Generate full product catalog on webroot
-	if ($foxyshop_settings['generate_product_sitemap']) {
-		file_put_contents(ABSPATH . 'products.xml', foxyshop_xml_product_feed());
-	}
+    //Generate full product catalog on webroot
+    if ($foxyshop_settings['generate_product_sitemap']) {
+        file_put_contents(ABSPATH . 'products.xml', foxyshop_xml_product_feed());
+    }
 
 	//Save Action (For Other Integrations)
 	do_action("foxyshop_save_product", $post_id);

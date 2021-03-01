@@ -23,7 +23,7 @@ function foxyshop_save_feed_file() {
 }
 
 function foxyshop_create_feed() {
-	global $product, $google_product_field_names;
+	global $product, $product_feed_field_names;
 
 	//Field Names
 	$fieldnames = array(
@@ -40,7 +40,7 @@ function foxyshop_create_feed() {
 		'image_link',
 		'additional_image_link'
 	);
-	$fieldnames = array_merge($fieldnames, $google_product_field_names);
+	$fieldnames = array_merge($fieldnames, $product_feed_field_names);
 	$lastfieldname = end($fieldnames);
 
 	$write = "";
@@ -137,7 +137,7 @@ function foxyshop_create_feed() {
 }
 
 function foxyshop_google_product_xml($id, $batch_process = "") {
-	global $google_product_field_names, $product, $foxyshop_settings;
+	global $product_feed_field_names, $product, $foxyshop_settings;
 	$xml = "";
 
 	if ($batch_process == "DELETE") {
@@ -217,7 +217,7 @@ function foxyshop_google_product_xml($id, $batch_process = "") {
 
 		$xml .= '<sc:target_country>US</sc:target_country>'."\n";
 		$xml .= '<sc:content_language>en</sc:content_language>'."\n";
-		foreach($google_product_field_names as $field) {
+		foreach($product_feed_field_names as $field) {
 			$val = get_post_meta($product['id'],'_'.$field,1);
 			if ($field == 'condition') $val = $condition;
 			if ($field == 'gtin' && !$val) $val = $product['code'];

@@ -137,9 +137,9 @@ if ($foxyshop_settings['manage_inventory_levels']) {
 }
 
 //Generate Product Feed
-if ($foxyshop_settings['generate_product_sitemap']) {
-	include(FOXYSHOP_PATH . '/xmlproductfeed.php');
-}
+//if ($foxyshop_settings['google_product_support']) {
+//	include(FOXYSHOP_PATH . '/googleproductfeed.php');
+//}
 
 //Tools Page
 include(FOXYSHOP_PATH . '/tools-page.php');
